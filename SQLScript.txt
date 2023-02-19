@@ -1,0 +1,133 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema book_store
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema book_store
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `book_store` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `book_store` ;
+
+-- -----------------------------------------------------
+-- Table `book_store`.`book`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book_store`.`book` (
+  `bookid` INT NOT NULL AUTO_INCREMENT,
+  `price` FLOAT NOT NULL,
+  `author` VARCHAR(45) NOT NULL,
+  `publisher` VARCHAR(45) NULL DEFAULT NULL,
+  `year` INT NULL DEFAULT NULL,
+  `salecount` INT NULL DEFAULT NULL,
+  `rating` DOUBLE NULL DEFAULT NULL,
+  `isbn` VARCHAR(45) NULL DEFAULT NULL,
+  `comments` VARCHAR(150) NULL DEFAULT NULL,
+  UNIQUE INDEX `idbook_UNIQUE` (`bookid` ASC) VISIBLE,
+  PRIMARY KEY (`bookid`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book_store`.`author`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book_store`.`author` (
+  `authorid` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `publisher` VARCHAR(45) NULL DEFAULT NULL,
+  `biography` VARCHAR(150) NULL DEFAULT NULL,
+  `book_bookid` INT NOT NULL,
+  PRIMARY KEY (`authorid`, `book_bookid`),
+  UNIQUE INDEX `authorid_UNIQUE` (`authorid` ASC) VISIBLE,
+  INDEX `fk_author_book1_idx` (`book_bookid` ASC) VISIBLE,
+  CONSTRAINT `fk_author_book1`
+    FOREIGN KEY (`book_bookid`)
+    REFERENCES `book_store`.`book` (`bookid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book_store`.`order`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book_store`.`order` (
+  `orderid` INT NOT NULL AUTO_INCREMENT,
+  `userid` INT NOT NULL,
+  `status` VARCHAR(45) NULL DEFAULT NULL,
+  `book_bookid` INT NOT NULL,
+  PRIMARY KEY (`orderid`),
+  UNIQUE INDEX `orderid_UNIQUE` (`orderid` ASC) VISIBLE,
+  INDEX `fk_order_book_idx` (`book_bookid` ASC) VISIBLE,
+  CONSTRAINT `fk_order_book`
+    FOREIGN KEY (`book_bookid`)
+    REFERENCES `book_store`.`book` (`bookid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book_store`.`wishlist`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book_store`.`wishlist` (
+  `wishlistid` INT NOT NULL AUTO_INCREMENT,
+  `userid` INT NOT NULL,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `items` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`wishlistid`),
+  UNIQUE INDEX `wishlistid_UNIQUE` (`wishlistid` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book_store`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book_store`.`user` (
+  `userid` INT NOT NULL AUTO_INCREMENT,
+  `password` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `address` VARCHAR(45) NULL DEFAULT NULL,
+  `ccnumber` VARCHAR(45) NULL DEFAULT NULL,
+  `ccsecurity` VARCHAR(45) NULL DEFAULT NULL,
+  `admin` INT NULL DEFAULT NULL,
+  `wishlist_wishlistid` INT NOT NULL,
+  `order_orderid` INT NOT NULL,
+  PRIMARY KEY (`userid`, `wishlist_wishlistid`, `order_orderid`),
+  UNIQUE INDEX `userid_UNIQUE` (`userid` ASC) VISIBLE,
+  INDEX `fk_user_wishlist1_idx` (`wishlist_wishlistid` ASC) VISIBLE,
+  INDEX `fk_user_order1_idx` (`order_orderid` ASC) VISIBLE,
+  CONSTRAINT `fk_user_wishlist1`
+    FOREIGN KEY (`wishlist_wishlistid`)
+    REFERENCES `book_store`.`wishlist` (`wishlistid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_order1`
+    FOREIGN KEY (`order_orderid`)
+    REFERENCES `book_store`.`order` (`orderid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
