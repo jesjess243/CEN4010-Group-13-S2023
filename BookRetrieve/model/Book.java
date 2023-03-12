@@ -13,21 +13,41 @@ public class Book {
     @Column
     private String publisher;
     private Double price;
+    private Double rating;
     private String genre;
-    @Column
     private Integer bookid;
+    private Integer sales;
     private String bookname;
     private String author;
 
-
-
-    public Book(Integer bookid, String bookname, String author, String publisher, Double price, String genre) {
+    public Book(Integer bookid, String bookname, String author, String publisher, Double price, String genre, Double rating, Integer sales) {
         this.bookid = bookid;
         this.bookname = bookname;
         this.author = author;
         this.publisher = publisher;
         this.price = price;
         this.genre = genre;
+        this.sales = sales;
+        this.rating = rating;
+    }
+
+    public void setDiscount(Double discount) {
+        this.price *= (discount) / 100;
+    }
+    public Integer getSales() {
+        return sales;
+    }
+
+    public void setSales(Integer sales) {
+        this.sales = sales;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     public Integer getId() {
@@ -71,11 +91,7 @@ public class Book {
     public void setPrice() {
         this.price = price;
     }
-    /* Debugging testing set discount function
-       public void setDiscount(double discountPercent) {
-       this.price *= 1 - (discountPercent / 100);
-         }
-   */
+
     public String getGenre() {
         return genre;
     }
