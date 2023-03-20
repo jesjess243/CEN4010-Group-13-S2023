@@ -14,7 +14,16 @@ public class bookController {
 
     @Autowired
     bookService bookServ = new bookService();
-    
+    @PostMapping("/bookss")
+    public Book save(@RequestBody Book book) {
+        return repoTest.save(book);
+    }
+
+    // Returns all book list; May keep for demo, but unneeded.
+    @GetMapping("/books-list")
+    public List<Book> getAllBooks() {
+       return repoTest.findAll();
+    }
 
     @GetMapping("/books-list-genre/{genre}")
     public List<Book> findByGenreContaining(@PathVariable("genre") String genre) {
@@ -32,10 +41,6 @@ public class bookController {
        return repoTest.findTop10BySalesGreaterThanOrderBySalesDesc(0);
     }
 
-    @GetMapping("/books-list-publisher/{publisher}")
-    public List<Book> findByPublisher(@PathVariable("publisher") String publisher) {
-        return repoTest.findBypublisher(publisher);
-    }
 
     @PatchMapping("/books-update/{publisher}/{percent}")
     public List<Book> updatePublisher(@PathVariable("publisher") String publisher, @PathVariable("percent") double discountPercent) {
