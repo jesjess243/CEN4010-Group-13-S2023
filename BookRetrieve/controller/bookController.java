@@ -32,10 +32,6 @@ public class bookController {
        return repoTest.findTop10BySalesGreaterThanOrderBySalesDesc(0);
     }
 
-    @GetMapping("/books-list-publisher/{publisher}")
-    public List<Book> findByPublisher(@PathVariable("publisher") String publisher) {
-        return repoTest.findBypublisher(publisher);
-    }
 
     @PatchMapping("/books-update/{publisher}/{percent}")
     public List<Book> updatePublisher(@PathVariable("publisher") String publisher, @PathVariable("percent") double discountPercent) {
