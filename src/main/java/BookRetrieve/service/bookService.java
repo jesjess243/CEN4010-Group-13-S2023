@@ -12,7 +12,7 @@ import java.util.List;
 public class bookService {
 
     @Autowired
-    repo testRepo;
+    repo repository;
 
 
 
@@ -23,13 +23,13 @@ public class bookService {
         price *= discount / 100. After each one is done, save all and return.
      */
     public List<Book> updatePublisherDiscount(String publisher, double discountPercent) {
-        List<Book> allFromPublisher = testRepo.findBypublisher(publisher);
+        List<Book> allFromPublisher = repository.findBypublisher(publisher);
 
         Iterator<Book> iterate = allFromPublisher.iterator();
         while(iterate.hasNext()) {
             iterate.next().setDiscount(discountPercent);
         }
-        testRepo.saveAll(allFromPublisher);
+        repository.saveAll(allFromPublisher);
         return allFromPublisher;
     }
 }
