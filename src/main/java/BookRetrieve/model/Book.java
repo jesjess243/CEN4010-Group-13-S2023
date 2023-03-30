@@ -30,9 +30,13 @@ public class Book {
         this.sales = sales;
         this.rating = rating;
     }
-
+    // Divides the input percent by 100, then multiplies to get accurate dicsount prices.
     public void setDiscount(Double discount) {
-        this.price *= (discount) / 100;
+        double new_price;
+        new_price = Math.round(discount * 100);
+        new_price = new_price / 100;
+
+        this.price = new_price;
     }
     public Integer getSales() {
         return sales;
