@@ -30,9 +30,19 @@ public class Book {
         this.sales = sales;
         this.rating = rating;
     }
-
+    // Calculates the price discounted by an input percent, and rounded.
     public void setDiscount(Double discount) {
-        this.price *= (discount) / 100;
+        double new_price, discountPercent;
+        new_price = this.price;
+        discountPercent = 100 - discount;
+        new_price = discountPercent * new_price;
+        new_price = new_price / 100;
+        new_price = Math.round(new_price * 100);
+        new_price = new_price / 100;
+
+        new_price = Math.round(new_price * 100);
+        new_price /= 100;
+        this.price = new_price;
     }
     public Integer getSales() {
         return sales;

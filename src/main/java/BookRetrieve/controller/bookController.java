@@ -10,41 +10,30 @@ import java.util.List;
 @RestController
 public class bookController {
     @Autowired
-    repo repoTest;
+    repo repository;
 
     @Autowired
-    bookService bookServ = new bookService();
-    @PostMapping("/bookss")
-    public Book save(@RequestBody Book book) {
-        return repoTest.save(book);
-    }
-
-    // Returns all book list; May keep for demo, but unneeded.
-    @GetMapping("/books-list")
-    public List<Book> getAllBooks() {
-       return repoTest.findAll();
-    }
-
+    bookService bookService = new bookService();
+    // Getmapping which returns all books matching the input genre
     @GetMapping("/books-list-genre/{genre}")
     public List<Book> findByGenreContaining(@PathVariable("genre") String genre) {
-        return repoTest.findByGenre(genre);
+        return repository.findByGenre(genre);
     }
 
-
+    // Getmapping which returns all books in the database with a rating equal to or GREATER than that entered
    @GetMapping("/books-list-rating/{minimumrating}")
     public List<Book> findbyrating(@PathVariable("minimumrating") double minimumrating) {
-       return repoTest.findByratingGreaterThanEqual(minimumrating);
+       return repository.findByratingGreaterThanEqual(minimumrating);
     }
-
+    // Getmapping which returns the top 10 sellers, in decesending order
     @GetMapping("/books-list-topsellers")
     public List<Book> topSellers() {
-       return repoTest.findTop10BySalesGreaterThanOrderBySalesDesc(0);
+        return repository.findTop10BySalesGreaterThanOrderBySalesDesc(0);
     }
-
-
+    // Patchmap which is used for discounting all books under a publisher by the input percentage
     @PatchMapping("/books-update/{publisher}/{percent}")
     public List<Book> updatePublisher(@PathVariable("publisher") String publisher, @PathVariable("percent") double discountPercent) {
-        return bookServ.updatePublisherDiscount(publisher, discountPercent);
+        return bookService.updatePublisherDiscount(publisher, discountPercent);
     }
 
 }
