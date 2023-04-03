@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
+</html>
+import requests
+
+API_BASE_URL = 'https://example.com/api'
+
+# create user with username, password, and optional fields
+def create_user(username, password, name=None, email=None, home_address=None):
+    user = {
+        'username': username,
+        'password': password,
+        'name': name,
+        'email': email,
+        'home_address': home_address
+    }
+    response = requests.post(f'{API_BASE_URL}/users', json=user)
+    if response.ok:
+        print('User created successfully')
+    else:
+        print('Error creating user')
+
+# retrieve user object and its fields by username
+def get_user(username):
+    response = requests.get(f'{API_BASE_URL}/users/{username}')
+    if response.ok:
+        user = response.json()
+        print(f'Username: {user["username"]}')
+        print(f'Name: {user["name"]}')
+        print(f'Email: {user["email"]}')
+        print(f'Home Address: {user["home_address"]}')
+    else:
+        print('Error getting user')
+
+# update user and any fields except email
+def update_user(username, name=None, home_address=None):
+    user = {
+        'username': username,
+        'name': name,
+        'home_address': home_address
+    }
+    response = requests.put(f'{API_BASE_URL}/users/{username}', json=user)
+    if response.ok:
+        print('User updated successfully')
+    else:
+        print('Error updating user')
+
+# create credit card for user
+def create_credit_card(username, credit_card):
+    response = requests.post(f'{API_BASE_URL}/users/{username}/credit_cards', json=credit_card)
+    if response.ok:
+        print('Credit card created successfully')
+    else:
+        print('Error creating credit card')
+
+# example usage
+create_user('anther', 'password123', name='Anthony Hernandez', email='anther@example.com', home_address='123 Main St')
+get_user('anther')
+update_user('anther', name='Anthony Smith')
+create_credit_card('anther', {'card_number': '1234 5678 9012 3456', 'expiration_date': '12/23', 'security_code': '123'})
