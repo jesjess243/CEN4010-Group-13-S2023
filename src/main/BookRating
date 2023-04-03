@@ -1,0 +1,83 @@
+import java.util.*;
+
+class Book {
+  private String name;
+  private double rating;
+  private String comment;
+  private Date timestamp;
+
+  public Book(String name) {
+    this.name = name;
+  }
+
+  public void addRating(double rating) {
+    this.rating = rating;
+  }
+
+  public void addComment(String comment) {
+    this.comment = comment;
+  }
+
+  public void addTimestamp(Date timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public double getRating() {
+    return rating;
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public Date getTimestamp() {
+    return timestamp;
+  }
+
+  public String toString() {
+    return "Name: " + name + " Rating: " + rating + " Comment: " + comment + " Timestamp: " + timestamp;
+  }
+}
+
+public class BookRating {
+  public static void main(String[] args) {
+    Book book1 = new Book("It Starts with Us");
+    book1.addRating(5);
+    book1.addComment("I loved this book so much!!! Definitely make sure you read It Ends With Us first though!!!");
+    book1.addTimestamp(new Date());
+
+    Book book2 = new Book("The Seven Husbands of Evelyn Hugo");
+    book2.addRating(4);
+    book2.addComment("This is the second book I've read by Taylor Jenkins Reid and I loved it!");
+    book2.addTimestamp(new Date());
+
+    Book book3 = new Book("The Housemaid");
+    book3.addRating(5);
+    book3.addComment("Kept me guessing until the end. Thought i had it figured out..but no! Good twists and turns. Kept you invested.");
+    book3.addTimestamp(new Date());
+
+    List<Book> bookList = new ArrayList<>();
+    bookList.add(book1);
+    bookList.add(book2);
+    bookList.add(book3);
+
+    Collections.sort(bookList, new Comparator<Book>() {
+      @Override
+      public int compare(Book b1, Book b2) {
+        return Double.compare(b2.getRating(), b1.getRating());
+      }
+    });
+
+    for (Book book : bookList) {
+      System.out.println(book);
+    }
+
+    double totalRating = 0;
+    for (Book book : bookList) {
+      totalRating += book.getRating();
+    }
+
+    double averageRating = totalRating / bookList.size();
+    System.out.println("Average rating: " + Math.round(averageRating * 100.0) / 100.0);
+  }
+}
