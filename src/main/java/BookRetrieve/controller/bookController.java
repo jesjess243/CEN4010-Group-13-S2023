@@ -14,6 +14,7 @@ public class bookController {
 
     @Autowired
     bookService bookService = new bookService();
+
     // Getmapping which returns all books matching the input genre
     @GetMapping("/books-list-genre/{genre}")
     public List<Book> findByGenreContaining(@PathVariable("genre") String genre) {
@@ -31,8 +32,11 @@ public class bookController {
         return repository.findTop10BySalesGreaterThanOrderBySalesDesc(0);
     }
     // Patchmap which is used for discounting all books under a publisher by the input percentage
-    @PatchMapping("/books-update/{publisher}/{percent}")
-    public List<Book> updatePublisher(@PathVariable("publisher") String publisher, @PathVariable("percent") double discountPercent) {
+    @PatchMapping("/books-update")
+    public List<Book> updatePublisher(@RequestBody Book book) {
+        String publisher = book.getPublisher();
+        Double discountPercent = book.getDiscount();
+        System.out.println("publisher, discountPercent");
         return bookService.updatePublisherDiscount(publisher, discountPercent);
     }
 
