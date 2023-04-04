@@ -20,7 +20,9 @@ public class Book {
     private String bookname;
     private String author;
 
-    public Book(Integer bookid, String bookname, String author, String publisher, Double price, String genre, Double rating, Integer sales) {
+    private Double discount;
+
+    public Book(Integer bookid, String bookname, String author, String publisher, Double price, String genre, Double rating, Integer sales, Double discount) {
         this.bookid = bookid;
         this.bookname = bookname;
         this.author = author;
@@ -29,9 +31,10 @@ public class Book {
         this.genre = genre;
         this.sales = sales;
         this.rating = rating;
+        this.discount = discount;
     }
-    // Calculates the price discounted by an input percent, and rounded.
-    public void setDiscount(Double discount) {
+    // Divides the input percent by 100, then multiplies to get accurate dicsount prices.
+    public void setDiscountPercent(Double discount) {
         double new_price, discountPercent;
         new_price = this.price;
         discountPercent = 100 - discount;
@@ -44,6 +47,11 @@ public class Book {
         new_price /= 100;
         this.price = new_price;
     }
+
+    public Double getDiscount() { return discount;
+    }
+
+    public void setDiscount(Double discount) { this.discount = discount;}
     public Integer getSales() {
         return sales;
     }
